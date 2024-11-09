@@ -68,7 +68,14 @@ export const login = async (req, res) => {
 
 export const signup = async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      notificationToken,
+      userType,
+    } = req.body;
 
     const existingUser = await User.findOne({ email });
 
@@ -81,6 +88,8 @@ export const signup = async (req, res) => {
       lastName,
       email,
       password,
+      notificationToken,
+      userType,
     });
 
     return res.status(201).json({ message: "User created successfully" });

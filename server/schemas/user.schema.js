@@ -26,6 +26,12 @@ const userSchema = new mongoose.Schema(
       maxlength: 56,
       required: true,
     },
+    notificationToken: {
+      type: String,
+    },
+    userType: {
+      type: String,
+    },
     conversations: [
       {
         type: mongoose.Schema.Types.ObjectId,
