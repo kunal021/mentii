@@ -25,12 +25,15 @@ public interface ApiData
     @POST("signup")
     Call<JsonObject> forSignUp(@Body RequestBody body);
 
-    @FormUrlEncoded
+    /*@FormUrlEncoded
     @POST("login")
     Call<JsonObject> loginUser(
             @Field("email") String email,
             @Field("password") String password
-    );
+    );*/
+
+    @POST("login")
+    Call<JsonObject> forLogin(@Body RequestBody body);
 
 
 }

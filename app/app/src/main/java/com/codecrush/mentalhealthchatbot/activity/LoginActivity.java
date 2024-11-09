@@ -20,6 +20,8 @@ import com.codecrush.mentalhealthchatbot.helper.RetrofitHelper;
 import com.codecrush.mentalhealthchatbot.intrface.SuccessResponseCallback;
 import com.google.gson.JsonObject;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -85,7 +87,13 @@ public class LoginActivity extends AppCompatActivity
             {
                 ApiData apiData= RetrofitHelper.instanceOfRetrofit(getResources().getString(R.string.urlauth));
 
-                Call<JsonObject> call=apiData.loginUser(userName,password);
+                //Call<JsonObject> call=apiData.forLogin(userName,password);
+
+                String formData ="&email=" + userName +
+                        "&password=" + password /*+
+                        "&notificationToken=" + MethodHelper.getNotificationToken()*/;
+
+                Call<JsonObject> call = apiData.forLogin(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), formData));
 
                 if (TVSignIn.getVisibility() == View.VISIBLE && PBLogin.getVisibility() == View.GONE)
                 {
@@ -113,7 +121,10 @@ public class LoginActivity extends AppCompatActivity
 
                                         editor.commit();
 
-                                        Toast.makeText(LoginActivity.this,"Login Successfully", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                        finish();
+
+                                        //Toast.makeText(LoginActivity.this,"Login Successfully", Toast.LENGTH_LONG).show();
 
                                     }
 
