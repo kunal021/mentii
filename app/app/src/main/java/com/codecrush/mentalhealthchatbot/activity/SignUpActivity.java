@@ -88,7 +88,10 @@ public class SignUpActivity extends AppCompatActivity
                 String formData = "firstName=" + name +
                         "&lastName=" + "hhhh" +
                         "&email=" + userName +
-                        "&password=" + password;
+                        "&password=" + password +
+                        "&notificationToken=" + MethodHelper.getNotificationToken();
+
+                Log.d("TAGToken", String.valueOf(MethodHelper.getNotificationToken()));
 
                 /*RequestBody requestBody = RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), formData);*/
 
@@ -101,9 +104,9 @@ public class SignUpActivity extends AppCompatActivity
 
                 Call<JsonObject> call = apiData.forSignUp(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), formData));
 
-                Log.d("TAG", ETName.getText().toString());
+                /*Log.d("TAG", ETName.getText().toString());
                 Log.d("TAG", ETUserName.getText().toString());
-                Log.d("TAG", ETPassword.getText().toString());
+                Log.d("TAG", ETPassword.getText().toString());*/
 
                 if (TVSignUp.getVisibility() == View.VISIBLE && PBSignUp.getVisibility() == View.GONE)
                 {
@@ -121,18 +124,24 @@ public class SignUpActivity extends AppCompatActivity
 
                                         SharedPreferences userPreference = getSharedPreferences("user", MODE_PRIVATE);
                                         SharedPreferences.Editor editor = userPreference.edit();
+
                                         editor.putString("name", name);
                                         editor.putString("username", userName);
                                         editor.putString("password", password);
                                         editor.commit();
 
-                                        Toast.makeText(SignUpActivity.this, "SignUp Successfully", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                                        finish();
+                                        //Toast.makeText(SignUpActivity.this, "SignUp Successfully", Toast.LENGTH_LONG).show();
+
                                     }
                                 }
 
                                 @Override
-                                public void onFailureResponse(JsonObject Object) {
+                                public void onFailureResponse(JsonObject Object)
+                                {
                                     Toast.makeText(SignUpActivity.this, "SignUp Unsuccessfully", Toast.LENGTH_LONG).show();
+
                                     TVSignUp.setVisibility(View.VISIBLE);
                                     PBSignUp.setVisibility(View.GONE);
                                 }

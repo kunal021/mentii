@@ -11,6 +11,9 @@ import android.widget.Toast;
 import com.codecrush.mentalhealthchatbot.intrface.InternetCheckInterface;
 import com.codecrush.mentalhealthchatbot.intrface.SuccessResponseCallback;
 import com.codecrush.mentalhealthchatbot.activity.LoginActivity;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -177,8 +180,8 @@ public class MethodHelper
                 JSONObject jsonObject = new JSONObject(Response.errorBody().string());
                 String Message = jsonObject.getString("message");
                 Toast.makeText(Context, "Error: " + Message, Toast.LENGTH_LONG).show();
-                Log.d("TAG",jsonObject.toString());
-                Log.d("TAG",String.valueOf(Response.code()));
+                //Log.d("TAG",jsonObject.toString());
+                //Log.d("TAG",String.valueOf(Response.code()));
 
                 ProgressBar.setVisibility(View.GONE);
                 TVNoDataFound.setVisibility(View.VISIBLE);
@@ -230,13 +233,32 @@ public class MethodHelper
 
                 JSONObject jsonObject = new JSONObject(Response.errorBody().string());
                 String Message = jsonObject.getString("message");
-                String code=String.valueOf(jsonObject.getInt("status"));
-                Toast.makeText(Context, "Error(" + code + ") : " + Message, Toast.LENGTH_LONG).show();
+                Toast.makeText(Context, "Error: " + Message, Toast.LENGTH_LONG).show();
 
             } catch (JSONException | IOException e) {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public static Task<String> getNotificationToken() {
+        TaskCompletionSource<String> taskCompletionSource = new TaskCompletionSource<>();
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.d("Fetching", task.getException().toString());
+                        taskCompletionSource.setException(task.getException());
+                        return;
+                    }
+
+                    // Get new FCM registration token
+                    String token = task.getResult();
+                    Log.d("Token: ", token);
+                    taskCompletionSource.setResult(token);
+                });
+
+        return taskCompletionSource.getTask();
     }
 
 }
