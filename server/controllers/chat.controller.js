@@ -255,7 +255,7 @@ export const startChat = async (req, res) => {
 export const getChat = async (req, res) => {
   const { conversationId } = req.body;
   try {
-    const chat = await Chat.findById(conversationId).sort({ createdAt: -1 });
+    const chat = await Chat.find({ conversationId }).sort({ createdAt: -1 });
 
     if (!chat) {
       return res.status(404).json({ error: "Chat not found" });

@@ -13,6 +13,6 @@ const router = express.Router();
 router.post("/new-conversation", authValidation, newConversation);
 router.get("/get-conversations", authValidation, getConversations);
 router.post("/start-chat", authValidation, startChat);
-router.get("/get-chat", authValidation, getChat);
+router.get("/get-chats", authValidation, getChat);
 
 export default router;
