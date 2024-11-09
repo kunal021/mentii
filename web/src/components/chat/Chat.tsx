@@ -33,11 +33,12 @@ const ChatPage: React.FC = () => {
       lastMessage: "When is my next appointment?",
     },
   ]);
+  const [email, setEmail] = useState<string>("");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:3001"); // Replace with your Socket.IO server URL
+    const newSocket = io("http://localhost:8888"); // Replace with your Socket.IO server URL
     setSocket(newSocket);
 
     newSocket.on("message", (message: Message) => {
@@ -61,7 +62,10 @@ const ChatPage: React.FC = () => {
         content: inputMessage,
         timestamp: new Date(),
       };
-      socket.emit("message", { patientId: selectedPatient.id, message });
+      socket.emit("sendMessageToClient", {
+        clientId: selectedPatient.id,
+        message,
+      });
       setMessages((prevMessages) => [...prevMessages, message]);
       setInputMessage("");
     }

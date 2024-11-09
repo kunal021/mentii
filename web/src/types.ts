@@ -38,6 +38,6 @@ export interface SignupProps {
 }
 
 export interface LoginProps {
-  loginIdentifier: string;
+  email: string;
   password: string;
 }

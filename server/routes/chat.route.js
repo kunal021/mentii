@@ -6,26 +6,16 @@ import {
   newConversation,
   startChat,
 } from "../controllers/chat.controller.js";
-import authValidation from "../middlewares/authValidation.middleware.js";
+
 import multer from "multer";
 
 const upload = multer();
 
 const router = express.Router();
 
-router.post(
-  "/new-conversation",
-  upload.none(),
-  authValidation,
-  newConversation
-);
-router.post(
-  "/get-conversations",
-  upload.none(),
-  authValidation,
-  getConversations
-);
-router.post("/start-chat", upload.none(), authValidation, startChat);
-router.post("/get-chats", upload.none(), authValidation, getChat);
+router.post("/new-conversation", upload.none(), newConversation);
+router.post("/get-conversations", upload.none(), getConversations);
+router.post("/start-chat", upload.none(), startChat);
+router.post("/get-chats", upload.none(), getChat);
 
 export default router;

@@ -15,7 +15,7 @@ export function Login() {
   const navigate = useNavigate();
   const { login, token: authToken, loading: authLoading } = useAuth();
   const [formData, setFormData] = useState<LoginProps>({
-    loginIdentifier: "",
+    email: "",
     password: "",
   });
 
@@ -27,7 +27,7 @@ export function Login() {
 
   const mutation = useMutation({
     mutationFn: (data: LoginProps) => {
-      return api.post(`/api/v1/auth/login`, data);
+      return api.post(`/auth/login`, data);
     },
     onSuccess: (data) => {
       login({
@@ -65,21 +65,21 @@ export function Login() {
         <div className="space-y-4">
           <div>
             <Label
-              htmlFor="loginIdentifier"
+              htmlFor="email"
               className="block text-sm font-medium text-gray-700"
             >
               Email
             </Label>
             <Input
-              id="loginIdentifier"
-              name="loginIdentifier"
+              id="email"
+              name="email"
               type="email"
-              autoComplete="loginIdentifier"
+              autoComplete="email"
               required
               className="mt-1 w-full"
               placeholder="you@example.com"
               disabled={isLoading}
-              value={formData.loginIdentifier}
+              value={formData.email}
               onChange={(e) =>
                 handleChange({ e, data: formData, setData: setFormData })
               }

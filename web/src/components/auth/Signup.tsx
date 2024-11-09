@@ -104,28 +104,7 @@ export function Signup() {
               />
             </div>
           </div>
-          <div>
-            <Label
-              htmlFor="userName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              User Name
-            </Label>
-            <Input
-              id="userName"
-              name="userName"
-              type="text"
-              autoComplete="userName"
-              required
-              className="mt-1 w-full"
-              placeholder="johndoe"
-              disabled={isLoading}
-              value={formData.userName}
-              onChange={(e) =>
-                handleChange({ e, data: formData, setData: setFormData })
-              }
-            />
-          </div>
+
           <div>
             <Label
               htmlFor="email"
