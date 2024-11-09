@@ -145,7 +145,12 @@ export const newConversation = async (req, res) => {
       validateBeforeSave: false,
     });
 
-    return res.status(200).json({ result: result.response.text() });
+    return res
+      .status(200)
+      .json({
+        result: result.response.text(),
+        conversationId: newConversation._id,
+      });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
