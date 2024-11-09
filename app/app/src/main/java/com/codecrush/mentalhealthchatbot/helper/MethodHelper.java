@@ -178,10 +178,10 @@ public class MethodHelper
             try {
 
                 JSONObject jsonObject = new JSONObject(Response.errorBody().string());
-                String Message = jsonObject.getString("message");
+                String Message = jsonObject.getString("error");
                 Toast.makeText(Context, "Error: " + Message, Toast.LENGTH_LONG).show();
-                //Log.d("TAG",jsonObject.toString());
-                //Log.d("TAG",String.valueOf(Response.code()));
+                Log.d("TAG",jsonObject.toString());
+                Log.d("TAG",String.valueOf(Response.code()));
 
                 ProgressBar.setVisibility(View.GONE);
                 TVNoDataFound.setVisibility(View.VISIBLE);

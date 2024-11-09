@@ -47,11 +47,13 @@ public class ChatFragment extends Fragment
         PBRVChatMessage=view.findViewById(R.id.pb_rv_chat_message);
         TVDataNotFoundRVChatMessage=view.findViewById(R.id.tv_data_not_found_rv_chat_message);
 
+        SharedPreferences userPreference = getContext().getSharedPreferences("user", MODE_PRIVATE);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        RVChatMessage.setLayoutManager(linearLayoutManager);
 
-        //RVChatMessage.setLayoutManager(linearLayoutManager);
+        
 
-        SharedPreferences usr = getContext().getSharedPreferences("user", MODE_PRIVATE);
 
         return view;
     }

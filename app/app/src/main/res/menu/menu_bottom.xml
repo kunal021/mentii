@@ -14,4 +14,10 @@
 
     </item>
 
+    <item android:id="@+id/emergency"
+        android:title="Emergency"
+        android:icon="@drawable/doctor_selector">
+
+    </item>
+
 </menu>

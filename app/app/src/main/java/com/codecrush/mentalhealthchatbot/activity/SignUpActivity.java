@@ -51,6 +51,14 @@ public class SignUpActivity extends AppCompatActivity
         PBSignUp=findViewById(R.id.pb_signup);
         TVSignUp=findViewById(R.id.tv_signup);
 
+        SharedPreferences userprefrence = getSharedPreferences("user", MODE_PRIVATE);
+
+        if (userprefrence.contains("_id"))
+        {
+            startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+            finish();
+        }
+
         TVSignIn.setOnClickListener(new View.OnClickListener()
         {
             @Override
