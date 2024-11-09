@@ -78,7 +78,7 @@ const model = client.getGenerativeModel({ model: "gemini-1.5-flash" });
 // };
 
 export const newConversation = async (req, res) => {
-  const { message, userType, userId } = req.body;
+  const { message, userType, userId, name } = req.body;
   try {
     if (!userType) {
       return res.status(401).json({ error: "Unauthorized" });
@@ -129,7 +129,7 @@ export const newConversation = async (req, res) => {
       generationConfig: { temperature: 0.6, maxOutputTokens: 500 },
     });
 
-    const promptText = `You are a helpful mental health support assistant. Please provide a comforting response to the following user message: "${message}"`;
+    const promptText = `You are a helpful mental health support assistant. Please provide a comforting response to the following user message: "${message}". The message should start with user's name ${name}`;
 
     const result = await chat.sendMessage(promptText);
 
@@ -145,12 +145,10 @@ export const newConversation = async (req, res) => {
       validateBeforeSave: false,
     });
 
-    return res
-      .status(200)
-      .json({
-        result: result.response.text(),
-        conversationId: newConversation._id,
-      });
+    return res.status(200).json({
+      result: result.response.text(),
+      conversationId: newConversation._id,
+    });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
