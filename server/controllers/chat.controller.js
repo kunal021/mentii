@@ -78,7 +78,7 @@ const model = client.getGenerativeModel({ model: "gemini-1.5-flash" });
 // };
 
 export const newConversation = async (req, res) => {
-  const { message, userType } = req.body;
+  const { message, userType, userId } = req.body;
   try {
     if (!userType) {
       return res.status(401).json({ error: "Unauthorized" });
@@ -89,17 +89,32 @@ export const newConversation = async (req, res) => {
     }
 
     const newConversation = await Conversation.create({});
+
+    if (!newConversation) {
+      return res
+        .status(500)
+        .json({ error: "Failed to create a new conversation." });
+    }
+
     const newMessage = await Chat.create({
       conversationId: newConversation._id,
       message,
       sender: userType,
     });
 
+    if (!newMessage) {
+      return res.status(500).json({ error: "Failed to create a new message." });
+    }
+
     newConversation.messages.push(newMessage._id);
     newConversation.lastMessage = newMessage._id;
 
+    if (!userId) {
+      return res.status(401).json({ error: "User not authenticated." });
+    }
+
     await User.findByIdAndUpdate(
-      req.user._id,
+      userId,
       {
         $push: { conversations: newConversation._id },
       },

@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Cookies from "js-cookie";
 
 interface Message {
   id: string;
@@ -33,13 +34,24 @@ const ChatPage: React.FC = () => {
       lastMessage: "When is my next appointment?",
     },
   ]);
-  const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string>(
+    JSON.parse(Cookies.get("user") || "")?.email || ""
+  );
+
+  console.log(email);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const newSocket = io("http://localhost:8888"); // Replace with your Socket.IO server URL
     setSocket(newSocket);
+
+    newSocket.on("connect", () => {
+      const email = JSON.parse(Cookies.get("user") || "")?.email;
+      if (email) {
+        newSocket.emit("setmyId", { customId: email });
+      }
+    });
 
     newSocket.on("message", (message: Message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
@@ -49,15 +61,17 @@ const ChatPage: React.FC = () => {
       newSocket.disconnect();
     };
   }, []);
-
   useEffect(() => {
+    setEmail(JSON.parse(Cookies.get("user") || "")?.email || "");
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  console.log(email);
 
   const sendMessage = () => {
     if (socket && inputMessage && selectedPatient) {
       const message: Message = {
-        id: Date.now().toString(),
+        id: email,
         sender: "doctor",
         content: inputMessage,
         timestamp: new Date(),
