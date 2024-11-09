@@ -1,5 +1,8 @@
 package com.codecrush.mentalhealthchatbot.activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.codecrush.mentalhealthchatbot.R;
 import com.codecrush.mentalhealthchatbot.fragment.ChatFragment;
 import com.codecrush.mentalhealthchatbot.fragment.ConsultDoctorFragment;
+import com.codecrush.mentalhealthchatbot.fragment.EmergencyFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -44,6 +48,14 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                SharedPreferences userprefrence = getSharedPreferences("user", MODE_PRIVATE);
+                SharedPreferences.Editor editor = userprefrence.edit();
+
+                editor.clear();
+                editor.commit();
+
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
 
             }
         });
@@ -56,7 +68,6 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-
 
         bottomNavbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -72,6 +83,10 @@ public class MainActivity extends AppCompatActivity
                 else if (id==R.id.consult_doctor)
                 {
                     loadFragment(new ConsultDoctorFragment(),1);
+                }
+                else if (id==R.id.emergency)
+                {
+                    loadFragment(new EmergencyFragment(),1);
                 }
 
 
@@ -108,4 +123,48 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        FragmentManager fm = getSupportFragmentManager();
+
+        if(fm.getBackStackEntryCount() > 1)
+        {
+            fm.popBackStackImmediate();
+
+            // Get the currently displayed fragment and update the BottomNavigationView
+            Fragment currentFragment = fm.findFragmentById(R.id.framelayout);
+            //Log.d("TAG", "onBackPressed: "+ R.id.framelayout);
+
+            if (currentFragment instanceof ChatFragment)
+            {
+                bottomNavbar.setSelectedItemId(R.id.chat);
+                //((HomeFragment) currentFragment).handleOnBackPressed();
+            }
+            else if (currentFragment instanceof ConsultDoctorFragment)
+            {
+                bottomNavbar.setSelectedItemId(R.id.consult_doctor);
+                //((NewsFragment) currentFragment).handleOnBackPressed();
+            }
+            else if (currentFragment instanceof EmergencyFragment)
+            {
+                bottomNavbar.setSelectedItemId(R.id.emergency);
+                //((FreeContentFragment) currentFragment).handleOnBackPressed(fm);
+            }
+            else
+            {
+                //---
+            }
+
+        }
+        else if (fm.getBackStackEntryCount() == 1)
+        {
+            finish();
+        }
+        else
+        {
+            finish();
+            super.onBackPressed();
+        }
+    }
 }

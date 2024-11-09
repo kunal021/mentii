@@ -11,9 +11,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_chat_message"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:paddingBottom="@dimen/_10sdp"
-        app:layout_constraintBottom_toTopOf="@id/cv_msg_send"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/_40sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

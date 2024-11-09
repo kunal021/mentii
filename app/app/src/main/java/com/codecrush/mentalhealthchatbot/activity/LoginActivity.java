@@ -53,6 +53,14 @@ public class LoginActivity extends AppCompatActivity
         PBLogin=findViewById(R.id.pb_login);
 
 
+        SharedPreferences userprefrence = getSharedPreferences("user", MODE_PRIVATE);
+
+        if (userprefrence.contains("_id"))
+        {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        }
+
 
         TVSiginUp.setOnClickListener(new View.OnClickListener()
         {
@@ -90,7 +98,7 @@ public class LoginActivity extends AppCompatActivity
                 //Call<JsonObject> call=apiData.forLogin(userName,password);
 
                 String formData ="&email=" + userName +
-                        "&password=" + password /*+
+                        "&password=" + password/*+
                         "&notificationToken=" + MethodHelper.getNotificationToken()*/;
 
                 Call<JsonObject> call = apiData.forLogin(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), formData));
@@ -112,12 +120,16 @@ public class LoginActivity extends AppCompatActivity
                                     {
                                         hasResponseBeenHandled=true;
 
+                                        JsonObject jsonObject=Object.get("user").getAsJsonObject();
+
                                         SharedPreferences userprefrence = getSharedPreferences("user", MODE_PRIVATE);
                                         SharedPreferences.Editor editor = userprefrence.edit();
 
-                                        // editor.putString("name",name);
                                         editor.putString("username",userName);
                                         editor.putString("password",password);
+                                        editor.putString("_id",jsonObject.get("_id").getAsString());
+                                        editor.putString("accessToken",Object.get("accessToken").getAsString());
+                                        editor.putString("refreshToken",Object.get("refreshToken").getAsString());
 
                                         editor.commit();
 
