@@ -251,3 +251,18 @@ export const startChat = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const getChat = async (req, res) => {
+  const { conversationId } = req.body;
+  try {
+    const chat = await Chat.findById(conversationId).sort({ createdAt: -1 });
+
+    if (!chat) {
+      return res.status(404).json({ error: "Chat not found" });
+    }
+
+    return res.status(200).json({ chat });
+  } catch {
+    return res.status(500).json({ error: error.message });
+  }
+};

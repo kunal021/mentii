@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getChat,
   //   chat,
   getConversations,
   newConversation,
@@ -12,6 +13,6 @@ const router = express.Router();
 router.post("/new-conversation", authValidation, newConversation);
 router.get("/get-conversations", authValidation, getConversations);
 router.post("/start-chat", authValidation, startChat);
-// router.post("/", authValidation, chat);
+router.get("/get-chat", authValidation, getChat);
 
 export default router;

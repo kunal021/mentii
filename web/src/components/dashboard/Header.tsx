@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import { Bell, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,23 +8,12 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Header: React.FC = () => {
-  const [notifications, setNotifications] = useState<number>(3);
-
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-background border-b border-border">
       <h1 className="text-2xl font-semibold text-foreground">
         Doctor Dashboard
       </h1>
       <div className="flex items-center space-x-4">
-        <Button variant="outline" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          {notifications > 0 && (
-            <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-primary-foreground transform translate-x-1/2 -translate-y-1/2 bg-primary rounded-full">
-              {notifications}
-            </span>
-          )}
-          <span className="sr-only">View notifications</span>
-        </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
