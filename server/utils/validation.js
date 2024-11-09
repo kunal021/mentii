@@ -18,6 +18,8 @@ export const signupSchema = zod.object({
     .string()
     .min(8, "Password must be atleast 8 characters")
     .max(56, "Password must be less than 56 characters"),
+  notificationToken: zod.string().optional(),
+  userType: zod.string().optional(),
 });
 
 export const loginSchema = zod.object({
