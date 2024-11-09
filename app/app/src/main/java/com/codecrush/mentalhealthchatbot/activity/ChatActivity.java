@@ -1,4 +1,4 @@
-package com.codecrush.mentalhealthchatbot;
+package com.codecrush.mentalhealthchatbot.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +28,8 @@ import com.codecrush.pjeclass.helpers.SocketHelper;
 import com.codecrush.pjeclass.models.DoubtDataModel;
 import com.codecrush.pjeclass.models.MessageDataModel;
 import com.codecrush.pjeclass.models.TestQuestionModel;*/
+
+import com.codecrush.mentalhealthchatbot.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;

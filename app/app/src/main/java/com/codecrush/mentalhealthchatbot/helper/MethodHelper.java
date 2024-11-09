@@ -1,6 +1,4 @@
-package com.codecrush.mentalhealthchatbot;
-
-import static androidx.core.content.ContextCompat.startActivity;
+package com.codecrush.mentalhealthchatbot.helper;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +7,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.codecrush.mentalhealthchatbot.intrface.InternetCheckInterface;
+import com.codecrush.mentalhealthchatbot.intrface.SuccessResponseCallback;
+import com.codecrush.mentalhealthchatbot.activity.LoginActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,7 +55,7 @@ public class MethodHelper
         }
     }
 
-    public static <T> void getResponseConditionWithoutPT(Response<T> Response, Context Context,SuccessResponseCallback Callback)
+    public static <T> void getResponseConditionWithoutPT(Response<T> Response, Context Context, SuccessResponseCallback Callback)
     {
         if (Response.isSuccessful())
         {
@@ -109,7 +111,7 @@ public class MethodHelper
         startActivity(Intent,Context);
     }
 
-    public static void checkInternetConditionByOpenAgain(Context Context,InternetCheckInterface Callback)
+    public static void checkInternetConditionByOpenAgain(Context Context, InternetCheckInterface Callback)
     {
         if (CheckInternet.isconnected(Context))
         {

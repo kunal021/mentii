@@ -1,4 +1,4 @@
-package com.codecrush.mentalhealthchatbot;
+package com.codecrush.mentalhealthchatbot.helper;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

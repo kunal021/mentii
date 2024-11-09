@@ -1,22 +1,23 @@
-package com.codecrush.mentalhealthchatbot;
+package com.codecrush.mentalhealthchatbot.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.codecrush.mentalhealthchatbot.ApiData;
+import com.codecrush.mentalhealthchatbot.intrface.InternetCheckInterface;
+import com.codecrush.mentalhealthchatbot.helper.MethodHelper;
+import com.codecrush.mentalhealthchatbot.R;
+import com.codecrush.mentalhealthchatbot.helper.RetrofitHelper;
+import com.codecrush.mentalhealthchatbot.intrface.SuccessResponseCallback;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -56,7 +57,7 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent signUP=new Intent(LoginActivity.this,SignUpActivity.class);
+                Intent signUP=new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(signUP);
             }
         });
@@ -82,7 +83,7 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onSuccessInternetCallback()
             {
-                ApiData apiData=RetrofitHelper.instanceOfRetrofit(getResources().getString(R.string.urlauth));
+                ApiData apiData= RetrofitHelper.instanceOfRetrofit(getResources().getString(R.string.urlauth));
 
                 Call<JsonObject> call=apiData.loginUser(userName,password);
 

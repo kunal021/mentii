@@ -72,7 +72,7 @@ public class RetrofitHelper
 }
 */
 
-package com.codecrush.mentalhealthchatbot;
+package com.codecrush.mentalhealthchatbot.helper;
 
 import android.util.Log;
 

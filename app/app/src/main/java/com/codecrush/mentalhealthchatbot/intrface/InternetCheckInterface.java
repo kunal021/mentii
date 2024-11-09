@@ -1,4 +1,4 @@
-package com.codecrush.mentalhealthchatbot;
+package com.codecrush.mentalhealthchatbot.intrface;
 
 public interface InternetCheckInterface
 {

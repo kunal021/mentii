@@ -1,26 +1,25 @@
-package com.codecrush.mentalhealthchatbot;
+package com.codecrush.mentalhealthchatbot.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.PixelCopy;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.codecrush.mentalhealthchatbot.ApiData;
+import com.codecrush.mentalhealthchatbot.intrface.InternetCheckInterface;
+import com.codecrush.mentalhealthchatbot.helper.MethodHelper;
+import com.codecrush.mentalhealthchatbot.R;
+import com.codecrush.mentalhealthchatbot.helper.RetrofitHelper;
+import com.codecrush.mentalhealthchatbot.intrface.SuccessResponseCallback;
 import com.google.gson.JsonObject;
-
-import org.w3c.dom.Text;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -57,7 +56,7 @@ public class SignUpActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent login=new Intent(SignUpActivity.this,LoginActivity.class);
+                Intent login=new Intent(SignUpActivity.this, LoginActivity.class);
                 startActivity(login);
             }
         });

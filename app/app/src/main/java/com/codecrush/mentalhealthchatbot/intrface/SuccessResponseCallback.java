@@ -1,4 +1,4 @@
-package com.codecrush.mentalhealthchatbot;
+package com.codecrush.mentalhealthchatbot.intrface;
 
 /*import com.google.android.gms.common.internal.safeparcel.SafeParcelable;*/
 import com.google.gson.JsonObject;
