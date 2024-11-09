@@ -1,4 +1,4 @@
-import express from "express";
+import express, { urlencoded } from "express";
 import {
   login,
   signup,

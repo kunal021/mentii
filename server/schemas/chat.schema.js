@@ -17,6 +17,9 @@ const chatSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    resultId: {
+      type: String,
+    },
     contentType: {
       type: String,
       default: "text",

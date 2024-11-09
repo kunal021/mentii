@@ -165,16 +165,17 @@ export const startChat = async (req, res) => {
       return res.status(400).json({ error: "All fields are required" });
     }
 
+    // Create user message
     const newMessage = await Chat.create({
       conversationId,
       message,
       sender: userId,
     });
 
-    const conversation = await Conversation.findById(conversationId).populate({
-      path: "messages",
-      select: "sender message",
-    });
+    // Get conversation and populate messages
+    const conversation = await Conversation.findById(conversationId).populate(
+      "messages"
+    );
 
     conversation.messages.push(newMessage._id);
     conversation.lastMessage = newMessage._id;
@@ -183,27 +184,70 @@ export const startChat = async (req, res) => {
       validateBeforeSave: false,
     });
 
-    // Ensure each message part contains 'text' data as required by the API
+    // Format history correctly for the chat model
     const history = conversation.messages.map((chat) => ({
-      role: chat.sender === "bot" ? "model" : "user",
-      parts: [{ data: { text: chat.message } }],
+      role: chat.sender === "bot" ? "assistant" : "user",
+      content: chat.message,
     }));
 
-    const chat = model.startChat({
-      history,
-      generationConfig: { temperature: 0.6, maxOutputTokens: 500 },
+    // Add the current message to history
+    history.push({
+      role: "user",
+      content: message,
     });
 
-    const promptText = `You are a helpful mental health support assistant. Please provide a comforting response to the following user message: "${message}"`;
+    try {
+      // Start chat session
+      const chat = await model.startChat();
 
-    // Call sendMessage with the correctly structured request object
-    const result = await chat.sendMessage({
-      prompt: promptText,
-      history,
-    });
+      // Send message with proper structure
+      const result = await chat.sendMessage(message, {
+        context: `You are a helpful mental health support assistant. Please provide comforting and supportive responses.`,
+        history: history,
+      });
 
-    return res.status(200).json({ result: result.response.text() });
+      // Get response text
+      const responseText = result.response.text();
+
+      // Save bot response to database
+      const botResponse = await Chat.create({
+        conversationId,
+        message: responseText,
+        sender: "bot",
+      });
+
+      // Update conversation with bot response
+      conversation.messages.push(botResponse._id);
+      conversation.lastMessage = botResponse._id;
+      await conversation.save({
+        validateBeforeSave: false,
+      });
+
+      const chatModel = await Chat.findById(newMessage._id);
+
+      if (!chatModel) {
+        return res.status(404).json({ error: "Chat not found" });
+      }
+
+      chatModel.resultId = botResponse._id;
+
+      await chatModel.save({
+        validateBeforeSave: false,
+      });
+
+      return res.status(200).json({
+        result: responseText,
+        messageId: botResponse._id,
+      });
+    } catch (chatError) {
+      console.error("Chat API Error:", chatError);
+      return res.status(500).json({
+        error: "Failed to generate response",
+        details: chatError.message,
+      });
+    }
   } catch (error) {
+    console.error("Server Error:", error);
     return res.status(500).json({ error: error.message });
   }
 };
