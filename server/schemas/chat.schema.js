@@ -10,12 +10,16 @@ const chatSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    result: {
+      type: String,
+    },
     sender: {
       type: String,
       required: true,
     },
     contentType: {
       type: String,
+      default: "text",
     },
     imageUrl: {
       type: String,

@@ -26,6 +26,12 @@ const userSchema = new mongoose.Schema(
       maxlength: 56,
       required: true,
     },
+    conversations: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Conversation",
+      },
+    ],
     refreshToken: {
       type: String,
     },

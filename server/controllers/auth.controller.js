@@ -1,5 +1,6 @@
 import User from "../schemas/user.schema.js";
 import jwt from "jsonwebtoken";
+
 // import passport from "../config/passport.js";
 const generateAccessAndRefreshToken = async (userId) => {
   const user = await User.findById(userId);
