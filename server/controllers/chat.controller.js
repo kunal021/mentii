@@ -255,8 +255,7 @@ export const startChat = async (req, res) => {
 
       return res.status(200).json({
         result: responseText,
-        messageId: botResponse._id,
-        detail: chatModel,
+        chatModel,
       });
     } catch (chatError) {
       console.error("Chat API Error:", chatError);
