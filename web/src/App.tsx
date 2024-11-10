@@ -1,12 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./context/AuthProvider";
-import Auth from "./layout/Auth";
+
 import ProtectedRoute from "./routes/ProtectedRoute";
 import UnauthorizedPage from "./components/Unauthorized";
 import NotFoundPage from "./components/NotFoundPage";
 import Layout from "./components/dashboard/Layout";
 import Home from "./components/dashboard/Home";
 import ChatPage from "./components/chat/Chat";
+import { Login } from "./components/auth/Login";
+import { Signup } from "./components/auth/Signup";
 
 const DashboardRoute = ({ element }: { element: React.ReactNode }) => (
   <ProtectedRoute>
@@ -18,11 +20,11 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/auth/login",
-      element: <Auth />,
+      element: <Login />,
     },
     {
       path: "/auth/signup",
-      element: <Auth />,
+      element: <Signup />,
     },
     {
       path: "/home",

@@ -16,7 +16,6 @@ export interface User {
   _id?: string;
   firstName: string;
   lastName?: string;
-  userName: string;
   email: string;
   firebaseUid?: string;
   age?: number;
@@ -32,7 +31,6 @@ export interface User {
 export interface SignupProps {
   firstName: string;
   lastName: string;
-  userName: string;
   email: string;
   password: string;
 }

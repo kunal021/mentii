@@ -6,7 +6,7 @@ import { useApi } from "@/hooks/useApi";
 import { handleChange } from "@/lib/utils";
 import { ApiError, LoginError, LoginProps } from "@/types";
 import { useMutation } from "@tanstack/react-query";
-import { Github, Loader2, Mail } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -54,7 +54,7 @@ export function Login() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 w-[450px] mx-auto my-10">
       <div className="text-center">
         <h2 className="text-3xl font-bold text-gray-900">Welcome back</h2>
         <p className="mt-2 text-sm text-gray-600">
@@ -135,36 +135,6 @@ export function Login() {
           </p>
         )}
         {isSuccess && <p style={{ color: "green" }}>Login successful!</p>}
-      </div>
-
-      <div>
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300" />
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">
-              Or continue with
-            </span>
-          </div>
-        </div>
-
-        <div className="mt-6 flex flex-col gap-3">
-          <Button
-            variant="outline"
-            className="w-full hover:bg-gray-50 transition duration-300 ease-in-out"
-            disabled={isLoading}
-          >
-            <Mail className="mr-2 h-4 w-4" /> Google
-          </Button>
-          <Button
-            variant="outline"
-            className="w-full hover:bg-gray-50 transition duration-300 ease-in-out"
-            disabled={isLoading}
-          >
-            <Github className="mr-2 h-4 w-4" /> GitHub
-          </Button>
-        </div>
       </div>
 
       <p className="mt-2 text-center text-sm text-gray-600">
