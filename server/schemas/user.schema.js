@@ -38,6 +38,11 @@ const userSchema = new mongoose.Schema(
         ref: "Conversation",
       },
     ],
+    keyWords: [
+      {
+        type: String,
+      },
+    ],
     refreshToken: {
       type: String,
     },

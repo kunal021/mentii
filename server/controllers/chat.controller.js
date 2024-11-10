@@ -4,78 +4,10 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import Chat from "../schemas/chat.schema.js";
 import Conversation from "../schemas/conversation.schema.js";
 import User from "../schemas/user.schema.js";
-// console.log(process.env.GEMINI_API_KEY);
+import nlp from "compromise";
 
 const client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = client.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-// export const chat = async (req, res) => {
-//   const { message, conversationId, userId } = req.body;
-
-//   try {
-//     if (!userId) {
-//       return res.status(401).json({ error: "Unauthorized" });
-//     }
-//     if (!message) {
-//       return res.status(400).json({ error: "All fields are required" });
-//     }
-
-//     let conversation;
-//     if (conversationId) {
-//       conversation = await Conversation.findOne({
-//         _id: conversationId,
-//       }).populate({
-//         path: "messages",
-//         select: "sender",
-//       });
-//       if (!conversation) {
-//         return res.status(404).json({ error: "Conversation not found" });
-//       }
-//     } else {
-//       conversation = await Conversation.create({});
-//     }
-//     console.log(conversation);
-
-//     const newMessage = await Chat.create({
-//       conversationId: conversation._id,
-//       message,
-//       sender: userId,
-//     });
-
-//     conversation.messages.push(newMessage._id);
-//     conversation.lastMessage = newMessage._id;
-
-//     await conversation.save({
-//       validateBeforeSave: false,
-//     });
-
-//     const history = conversation.messages.map((chat) => ({
-//       role: chat.sender === "bot" ? "model" : "user",
-//       parts: [{ text: chat.message }],
-//     }));
-
-//     // const history = conversation.messages.map((chat) => ({
-//     //   role: chat.sender !== "bot" ? "user" : "model",
-//     //   parts: [{ text: chat.message }],
-//     // }));
-
-//     console.log(JSON.stringify(history, null, 2));
-
-//     const chat = model.startChat({
-//       history: history,
-//       generationConfig: { temperature: 0.6, maxOutputTokens: 500 },
-//     });
-
-//     const promptText = `You are a helpful mental health support assistant. Please provide a comforting response to the following user message: "${message}"`;
-
-//     const result = await chat.sendMessage(promptText);
-//     // console.log(result.response.text());
-
-//     return res.status(200).json({ result: result.response.text() });
-//   } catch (error) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
 
 export const newConversation = async (req, res) => {
   const { message, userType, userId, name } = req.body;
@@ -87,6 +19,9 @@ export const newConversation = async (req, res) => {
     if (!message) {
       return res.status(400).json({ error: "All fields are required" });
     }
+
+    const doc = nlp(message);
+    const keywords = doc.topics().out("array");
 
     const newConversation = await Conversation.create({});
 
@@ -116,7 +51,10 @@ export const newConversation = async (req, res) => {
     await User.findByIdAndUpdate(
       userId,
       {
-        $push: { conversations: newConversation._id },
+        $push: {
+          conversations: newConversation._id,
+          keyWords: { $each: keywords },
+        },
       },
       { new: true }
     );
@@ -147,7 +85,7 @@ export const newConversation = async (req, res) => {
 
     return res.status(200).json({
       result: result.response.text(),
-      conversationId: newConversation._id,
+      ...newConversation,
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -218,6 +156,17 @@ export const startChat = async (req, res) => {
       // Start chat session
       const chat = await model.startChat();
 
+      const doc = nlp(message);
+      const keywords = doc.topics().out("array");
+
+      await User.findByIdAndUpdate(
+        userId,
+        {
+          $push: { keyWords: { $each: keywords } },
+        },
+        { new: true }
+      );
+
       // Send message with proper structure
       const result = await chat.sendMessage(message, {
         context: `You are a helpful mental health support assistant. Please provide comforting and supportive responses.`,
@@ -253,10 +202,7 @@ export const startChat = async (req, res) => {
         validateBeforeSave: false,
       });
 
-      return res.status(200).json({
-        result: responseText,
-        botResponse,
-      });
+      return res.status(200).json({ ...botResponse });
     } catch (chatError) {
       console.error("Chat API Error:", chatError);
       return res.status(500).json({
@@ -281,6 +227,41 @@ export const getChat = async (req, res) => {
 
     return res.status(200).json({ chat });
   } catch {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const getChatById = async (req, res) => {
+  const { chatId } = req.body;
+  try {
+    const chat = await Chat.findById(chatId);
+
+    if (!chat) {
+      return res.status(404).json({ error: "Chat not found" });
+    }
+
+    return res.status(200).json({ chat });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const getConversationsById = async (req, res) => {
+  const { conversationId } = req.body;
+  try {
+    const conversation = await Conversation.findById(conversationId).populate({
+      path: "messages",
+      populate: {
+        path: "resultId",
+      },
+    });
+
+    if (!conversation) {
+      return res.status(404).json({ error: "Conversation not found" });
+    }
+
+    return res.status(200).json({ conversation });
+  } catch (error) {
     return res.status(500).json({ error: error.message });
   }
 };

@@ -17,5 +17,6 @@ router.post("/new-conversation", upload.none(), newConversation);
 router.post("/get-conversations", upload.none(), getConversations);
 router.post("/start-chat", upload.none(), startChat);
 router.post("/get-chats", upload.none(), getChat);
+// router.post("/get-chat", upload.none(), getChat);
 
 export default router;
