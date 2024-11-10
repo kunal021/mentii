@@ -57,6 +57,8 @@ const ChatPage: React.FC = () => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
+    console.log(messages);
+
     return () => {
       newSocket.disconnect();
     };
