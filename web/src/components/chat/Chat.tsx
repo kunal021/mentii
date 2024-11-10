@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import io, { Socket } from "socket.io-client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -21,7 +20,7 @@ interface Patient {
 }
 
 const ChatPage: React.FC = () => {
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const [socket, setSocket] = useState<WebSocket | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
@@ -39,37 +38,36 @@ const ChatPage: React.FC = () => {
     JSON.parse(Cookies.get("user") || "")?.email || ""
   );
 
-  console.log(email);
-
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const newSocket = io("https://kunal-singh.onrender.com"); // Replace with your Socket.IO server URL
+    const newSocket = new WebSocket("wss://api.pjci.in:10095"); // Replace with your WebSocket server URL
     setSocket(newSocket);
 
-    newSocket.on("connect", () => {
+    newSocket.onopen = () => {
       const email = JSON.parse(Cookies.get("user") || "")?.email;
       if (email) {
-        newSocket.emit("setmyId", { customId: email });
+        // Send the "setmyId" action after the connection is established
+        newSocket.send(JSON.stringify({ action: "setmyId", customId: email }));
       }
-    });
+    };
 
-    newSocket.on("message", (message: Message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-    });
-
-    console.log(messages);
+    newSocket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      if (message && message.content && message.sender) {
+        setMessages((prevMessages) => [...prevMessages, message]);
+      }
+    };
 
     return () => {
-      newSocket.disconnect();
+      newSocket.close();
     };
-  }, [messages]);
+  }, []);
+
   useEffect(() => {
     setEmail(JSON.parse(Cookies.get("user") || "")?.email || "");
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  console.log(email);
 
   const sendMessage = () => {
     if (socket && inputMessage && selectedPatient) {
@@ -79,10 +77,15 @@ const ChatPage: React.FC = () => {
         content: inputMessage,
         timestamp: new Date(),
       };
-      socket.emit("sendMessageToClient", {
-        clientId: selectedPatient.id,
-        message,
-      });
+
+      socket.send(
+        JSON.stringify({
+          action: "sendMessageToClient",
+          clientId: selectedPatient.id,
+          message,
+        })
+      );
+
       setMessages((prevMessages) => [...prevMessages, message]);
       setInputMessage("");
     }

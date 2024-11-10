@@ -4,7 +4,6 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import Chat from "../schemas/chat.schema.js";
 import Conversation from "../schemas/conversation.schema.js";
 import User from "../schemas/user.schema.js";
-import nlp from "compromise";
 
 const client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = client.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -19,9 +18,6 @@ export const newConversation = async (req, res) => {
     if (!message) {
       return res.status(400).json({ error: "All fields are required" });
     }
-
-    const doc = nlp(message);
-    const keywords = doc.topics().out("array");
 
     const newConversation = await Conversation.create({});
 
@@ -53,7 +49,6 @@ export const newConversation = async (req, res) => {
       {
         $push: {
           conversations: newConversation._id,
-          keyWords: { $each: keywords },
         },
       },
       { new: true }
@@ -71,10 +66,6 @@ export const newConversation = async (req, res) => {
 
     const result = await chat.sendMessage(promptText);
 
-    // const title = await chat.sendMessage(
-    //   `Please provide oly one short and crisp title for the conversation: "${message}"`
-    // );
-
     const botResponse = await Chat.create({
       conversationId: newConversation._id,
       message: result.response.text(),
@@ -89,7 +80,6 @@ export const newConversation = async (req, res) => {
 
     return res.status(200).json({
       ...botResponse._doc,
-      // title: title.response.text(),
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -125,7 +115,6 @@ export const startChat = async (req, res) => {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    // Create user message
     const newMessage = await Chat.create({
       conversationId,
       message,
@@ -141,56 +130,32 @@ export const startChat = async (req, res) => {
       validateBeforeSave: false,
     });
 
-    // Format history correctly for the chat model
     const history = conversation.messages.map((chat) => ({
       role: chat.sender === "bot" ? "assistant" : "user",
       content: chat.message,
     }));
 
-    // Add the current message to history
     history.push({
       role: "user",
       content: message,
     });
 
     try {
-      // Start chat session
-      const chat = await model
-        .startChat
-        //   {
-        //   history,
-        //   generationConfig: { temperature: 0.6, maxOutputTokens: 500 },
-        // }
-        ();
+      const chat = await model.startChat();
 
-      const doc = nlp(message);
-      const keywords = doc.topics().out("array");
-
-      await User.findByIdAndUpdate(
-        userId,
-        {
-          $push: { keyWords: { $each: keywords } },
-        },
-        { new: true }
-      );
-
-      // Send message with proper structure
       const result = await chat.sendMessage(message, {
         context: `You are a helpful mental health support assistant. Please provide comforting and supportive responses.`,
         history,
       });
 
-      // Get response text
       const responseText = result.response.text();
 
-      // Save bot response to database
       const botResponse = await Chat.create({
         conversationId,
         message: responseText,
         sender: "bot",
       });
 
-      // Update conversation with bot response
       conversation.messages.push(botResponse._id);
       conversation.lastMessage = botResponse._id;
       await conversation.save({
