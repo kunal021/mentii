@@ -27,14 +27,14 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:background="@drawable/list"
-                    android:id="@+id/iv_chat_list"/>
+                    android:id = "@+id/iv_chat_list"
+                    android:layout_width = "23dp"
+                    android:layout_height = "33dp"
+                    android:layout_marginStart = "@dimen/_10sdp"
+                    android:background = "@drawable/list"
+                    app:layout_constraintBottom_toBottomOf = "parent"
+                    app:layout_constraintStart_toStartOf = "parent"
+                    app:layout_constraintTop_toTopOf = "parent" />
 
                 <TextView
                     android:id="@+id/tv_app_name"

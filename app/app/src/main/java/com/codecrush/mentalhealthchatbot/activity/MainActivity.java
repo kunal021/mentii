@@ -3,6 +3,7 @@ package com.codecrush.mentalhealthchatbot.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                Intent pastChatIntent = new Intent(getApplicationContext(), PastChatActivity.class);
+                startActivity(pastChatIntent);
 
             }
         });
