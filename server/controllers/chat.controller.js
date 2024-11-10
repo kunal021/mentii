@@ -138,19 +138,24 @@ export const startChat = async (req, res) => {
 
     // Format history correctly for the chat model
     const history = conversation.messages.map((chat) => ({
-      role: chat.sender === "bot" ? "assistant" : "user",
-      content: chat.message,
+      role: chat.sender === "bot" ? "model" : "user",
+      parts: [{ text: chat.message }],
     }));
 
     // Add the current message to history
     history.push({
       role: "user",
-      content: message,
+      parts: [{ text: message }],
     });
+
+    console.log(history);
 
     try {
       // Start chat session
-      const chat = await model.startChat();
+      const chat = model.startChat({
+        history,
+        generationConfig: { temperature: 0.6, maxOutputTokens: 500 },
+      });
 
       const doc = nlp(message);
       const keywords = doc.topics().out("array");
@@ -166,7 +171,6 @@ export const startChat = async (req, res) => {
       // Send message with proper structure
       const result = await chat.sendMessage(message, {
         context: `You are a helpful mental health support assistant. Please provide comforting and supportive responses.`,
-        history: history,
       });
 
       // Get response text

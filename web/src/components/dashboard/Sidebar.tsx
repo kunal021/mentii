@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, Users, MessageSquare, Settings } from "lucide-react";
+import { Home, MessageSquare } from "lucide-react";
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
@@ -15,7 +15,7 @@ const Sidebar: React.FC = () => {
         <ul className="p-2 space-y-1">
           <li>
             <Link
-              to="/"
+              to="/home"
               className={`flex items-center p-2 text-foreground rounded-lg ${
                 isActive("/") ? "bg-accent" : "hover:bg-accent/50"
               }`}
@@ -24,7 +24,7 @@ const Sidebar: React.FC = () => {
               Dashboard
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               to="/patients"
               className={`flex items-center p-2 text-foreground rounded-lg ${
@@ -34,7 +34,7 @@ const Sidebar: React.FC = () => {
               <Users className="w-5 h-5 mr-3" />
               Patients
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link
               to="/chat"
@@ -46,7 +46,7 @@ const Sidebar: React.FC = () => {
               Chat
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               to="/settings"
               className={`flex items-center p-2 text-foreground rounded-lg ${
@@ -56,7 +56,7 @@ const Sidebar: React.FC = () => {
               <Settings className="w-5 h-5 mr-3" />
               Settings
             </Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </div>

@@ -44,7 +44,7 @@ const ChatPage: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:8888"); // Replace with your Socket.IO server URL
+    const newSocket = io("https://kunal-singh.onrender.com"); // Replace with your Socket.IO server URL
     setSocket(newSocket);
 
     newSocket.on("connect", () => {

@@ -24,12 +24,7 @@ const Header: React.FC = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end" forceMount>
-            <DropdownMenuItem className="flex flex-col items-start">
-              <p className="font-medium text-sm">Dr. Jane Doe</p>
-              <p className="text-xs text-muted-foreground">
-                jane.doe@example.com
-              </p>
-            </DropdownMenuItem>
+            <DropdownMenuItem className="flex flex-col items-start"></DropdownMenuItem>
             <DropdownMenuItem>Profile</DropdownMenuItem>
             <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuItem>Log out</DropdownMenuItem>

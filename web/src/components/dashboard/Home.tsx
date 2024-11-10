@@ -7,14 +7,6 @@ const Home: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Appointments Today</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">5</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
             <CardTitle>Pending Messages</CardTitle>
           </CardHeader>
           <CardContent>
@@ -26,7 +18,7 @@ const Home: React.FC = () => {
             <CardTitle>Total Patients</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">128</p>
+            <p className="text-3xl font-bold">28</p>
           </CardContent>
         </Card>
       </div>
