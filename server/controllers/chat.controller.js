@@ -86,7 +86,7 @@ export const newConversation = async (req, res) => {
     });
 
     return res.status(200).json({
-      ...dataToSend._doc,
+      ...botResponse._doc,
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });
