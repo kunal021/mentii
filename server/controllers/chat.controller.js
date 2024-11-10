@@ -83,7 +83,7 @@ export const newConversation = async (req, res) => {
       validateBeforeSave: false,
     });
 
-    const dataToSend = await Chat.findById(newMessage._id).populate("messages");
+    const dataToSend = await Chat.findById(newMessage._id).populate("resultId");
 
     return res.status(200).json({
       result: result.response.text(),
@@ -131,12 +131,9 @@ export const startChat = async (req, res) => {
     });
 
     // Get conversation and populate messages
-    const conversation = await Conversation.findById(conversationId).populate({
-      path: "messages",
-      populate: {
-        path: "resultId",
-      },
-    });
+    const conversation = await Conversation.findById(conversationId).populate(
+      "messages"
+    );
 
     conversation.messages.push(newMessage._id);
     conversation.lastMessage = newMessage._id;
