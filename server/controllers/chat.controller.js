@@ -71,22 +71,15 @@ export const newConversation = async (req, res) => {
 
     const result = await chat.sendMessage(promptText);
 
-    const chatModel = await Chat.findById(newMessage._id);
+    const dataToSend = await Chat.findById(newMessage._id);
 
-    if (!chatModel) {
+    if (!dataToSend) {
       return res.status(404).json({ error: "Chat not found" });
     }
 
-    chatModel.result = result.response.text();
-
-    await chatModel.save({
-      validateBeforeSave: false,
-    });
-
-    const dataToSend = await Chat.findById(newMessage._id).populate("resultId");
+    dataToSend.result = result.response.text();
 
     return res.status(200).json({
-      result: result.response.text(),
       ...dataToSend._doc,
     });
   } catch (error) {
@@ -130,10 +123,7 @@ export const startChat = async (req, res) => {
       sender: userId,
     });
 
-    // Get conversation and populate messages
-    const conversation = await Conversation.findById(conversationId).populate(
-      "messages"
-    );
+    const conversation = await Conversation.findById(conversationId);
 
     conversation.messages.push(newMessage._id);
     conversation.lastMessage = newMessage._id;
@@ -189,18 +179,6 @@ export const startChat = async (req, res) => {
       conversation.messages.push(botResponse._id);
       conversation.lastMessage = botResponse._id;
       await conversation.save({
-        validateBeforeSave: false,
-      });
-
-      const chatModel = await Chat.findById(newMessage._id);
-
-      if (!chatModel) {
-        return res.status(404).json({ error: "Chat not found" });
-      }
-
-      chatModel.resultId = botResponse._id;
-
-      await chatModel.save({
         validateBeforeSave: false,
       });
 
