@@ -71,6 +71,10 @@ export const newConversation = async (req, res) => {
 
     const result = await chat.sendMessage(promptText);
 
+    // const title = await chat.sendMessage(
+    //   `Please provide oly one short and crisp title for the conversation: "${message}"`
+    // );
+
     const botResponse = await Chat.create({
       conversationId: newConversation._id,
       message: result.response.text(),
@@ -85,6 +89,7 @@ export const newConversation = async (req, res) => {
 
     return res.status(200).json({
       ...botResponse._doc,
+      // title: title.response.text(),
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -138,24 +143,25 @@ export const startChat = async (req, res) => {
 
     // Format history correctly for the chat model
     const history = conversation.messages.map((chat) => ({
-      role: chat.sender === "bot" ? "model" : "user",
-      parts: [{ text: chat.message }],
+      role: chat.sender === "bot" ? "assistant" : "user",
+      content: chat.message,
     }));
 
     // Add the current message to history
     history.push({
       role: "user",
-      parts: [{ text: message }],
+      content: message,
     });
-
-    console.log(history);
 
     try {
       // Start chat session
-      const chat = model.startChat({
-        history,
-        generationConfig: { temperature: 0.6, maxOutputTokens: 500 },
-      });
+      const chat = await model
+        .startChat
+        //   {
+        //   history,
+        //   generationConfig: { temperature: 0.6, maxOutputTokens: 500 },
+        // }
+        ();
 
       const doc = nlp(message);
       const keywords = doc.topics().out("array");
@@ -171,6 +177,7 @@ export const startChat = async (req, res) => {
       // Send message with proper structure
       const result = await chat.sendMessage(message, {
         context: `You are a helpful mental health support assistant. Please provide comforting and supportive responses.`,
+        history,
       });
 
       // Get response text
