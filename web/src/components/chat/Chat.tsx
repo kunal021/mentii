@@ -25,7 +25,7 @@ const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   const [patients, setPatients] = useState<Patient[]>([
     { id: "1", name: "John Doe", lastMessage: "How are you feeling today?" },
     { id: "2", name: "Jane Smith", lastMessage: "Thank you, doctor." },
@@ -63,7 +63,7 @@ const ChatPage: React.FC = () => {
     return () => {
       newSocket.disconnect();
     };
-  }, []);
+  }, [messages]);
   useEffect(() => {
     setEmail(JSON.parse(Cookies.get("user") || "")?.email || "");
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -129,7 +129,7 @@ const ChatPage: React.FC = () => {
       </Card>
       <Card className="flex-1 h-full rounded-none">
         <CardHeader>
-          <CardTitle>
+          <CardTitle onClick={() => setPatients([])}>
             {selectedPatient ? selectedPatient.name : "Select a patient"}
           </CardTitle>
         </CardHeader>
