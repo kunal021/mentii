@@ -85,7 +85,7 @@ export const newConversation = async (req, res) => {
 
     return res.status(200).json({
       result: result.response.text(),
-      ...newConversation,
+      ...newConversation._doc,
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -202,7 +202,7 @@ export const startChat = async (req, res) => {
         validateBeforeSave: false,
       });
 
-      return res.status(200).json({ ...botResponse });
+      return res.status(200).json({ ...botResponse._doc });
     } catch (chatError) {
       console.error("Chat API Error:", chatError);
       return res.status(500).json({
