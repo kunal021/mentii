@@ -83,9 +83,11 @@ export const newConversation = async (req, res) => {
       validateBeforeSave: false,
     });
 
+    const dataToSend = await Chat.findById(newMessage._id).populate("messages");
+
     return res.status(200).json({
       result: result.response.text(),
-      ...newConversation._doc,
+      ...dataToSend._doc,
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });
