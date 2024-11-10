@@ -131,9 +131,12 @@ export const startChat = async (req, res) => {
     });
 
     // Get conversation and populate messages
-    const conversation = await Conversation.findById(conversationId).populate(
-      "messages"
-    );
+    const conversation = await Conversation.findById(conversationId).populate({
+      path: "messages",
+      populate: {
+        path: "resultId",
+      },
+    });
 
     conversation.messages.push(newMessage._id);
     conversation.lastMessage = newMessage._id;
