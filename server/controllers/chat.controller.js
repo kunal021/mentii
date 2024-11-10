@@ -71,8 +71,6 @@ export const newConversation = async (req, res) => {
 
     const result = await chat.sendMessage(promptText);
 
-    const dataToSend = await Chat.findById(newMessage._id);
-
     const botResponse = await Chat.create({
       conversationId: newConversation._id,
       message: result.response.text(),
