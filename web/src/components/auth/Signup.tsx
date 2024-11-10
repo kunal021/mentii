@@ -30,7 +30,7 @@ export function Signup() {
 
   const mutation = useMutation({
     mutationFn: (data: SignupProps) => {
-      return api.post(`/api/v1/auth/signup`, data);
+      return api.post(`/auth/signup`, data);
     },
     onSuccess: () => {
       navigate("/auth/login");
