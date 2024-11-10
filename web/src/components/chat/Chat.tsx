@@ -92,7 +92,7 @@ const ChatPage: React.FC = () => {
     <div className="flex h-full">
       <Card className="w-1/4 h-full rounded-none border-r">
         <CardHeader>
-          <CardTitle>Patients</CardTitle>
+          <CardTitle onClick={() => setPatients([])}>Patients</CardTitle>
         </CardHeader>
         <CardContent>
           <ScrollArea className="h-[calc(100vh-10rem)]">
@@ -129,7 +129,7 @@ const ChatPage: React.FC = () => {
       </Card>
       <Card className="flex-1 h-full rounded-none">
         <CardHeader>
-          <CardTitle onClick={() => setPatients([])}>
+          <CardTitle>
             {selectedPatient ? selectedPatient.name : "Select a patient"}
           </CardTitle>
         </CardHeader>
