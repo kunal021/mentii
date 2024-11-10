@@ -39,7 +39,7 @@ public class ChatFragment extends Fragment
         }
 
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_consult_doctor, container, false);
+        view= inflater.inflate(R.layout.fragment_chat, container, false);
 
         ETMSG = view.findViewById(R.id.et_msg);
         IVSend = view.findViewById(R.id.iv_send);
@@ -49,10 +49,10 @@ public class ChatFragment extends Fragment
 
         SharedPreferences userPreference = getContext().getSharedPreferences("user", MODE_PRIVATE);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        RVChatMessage.setLayoutManager(linearLayoutManager);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+//        RVChatMessage.setLayoutManager(linearLayoutManager);
 
-        
+
 
 
         return view;

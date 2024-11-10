@@ -34,9 +34,9 @@ public class ConsultDoctorFragment extends Fragment
         TVDataNotFoundRVDoctorList=view.findViewById(R.id.tv_data_not_found_rv_chat_message);
 
 
-        RVDoctorList=view.findViewById(R.id.rv_doctor_list);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+//        RVDoctorList=view.findViewById(R.id.rv_doctor_list);
+//
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
         //RVDoctorList.setLayoutManager(linearLayoutManager);
 
