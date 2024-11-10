@@ -73,11 +73,17 @@ export const newConversation = async (req, res) => {
 
     const dataToSend = await Chat.findById(newMessage._id);
 
-    if (!dataToSend) {
-      return res.status(404).json({ error: "Chat not found" });
-    }
+    const botResponse = await Chat.create({
+      conversationId: newConversation._id,
+      message: result.response.text(),
+      sender: "bot",
+    });
 
-    dataToSend.result = result.response.text();
+    newConversation.messages.push(botResponse._id);
+    newConversation.lastMessage = botResponse._id;
+    await newConversation.save({
+      validateBeforeSave: false,
+    });
 
     return res.status(200).json({
       ...dataToSend._doc,
