@@ -27,11 +27,12 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id = "@+id/iv_chat_list"
-                    android:layout_width = "23dp"
-                    android:layout_height = "33dp"
-                    android:layout_marginStart = "@dimen/_10sdp"
-                    android:background = "@drawable/list"
+                    android:id = "@+id/iv_back"
+                    android:layout_width = "@dimen/_20sdp"
+                    android:layout_height = "@dimen/_20sdp"
+                    android:layout_marginStart = "@dimen/_6sdp"
+                    android:background = "@drawable/back"
+                    android:backgroundTint="@color/black"
                     app:layout_constraintBottom_toBottomOf = "parent"
                     app:layout_constraintStart_toStartOf = "parent"
                     app:layout_constraintTop_toTopOf = "parent" />
@@ -42,22 +43,12 @@
                     android:layout_height="match_parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/iv_chat_list"
-                    app:layout_constraintEnd_toStartOf="@id/iv_logout"
-                    android:text="Mental Health ChatBot"
+                    app:layout_constraintStart_toEndOf="@id/iv_back"
+                    android:layout_marginStart="@dimen/_6sdp"
+                    android:text="Mental Health Chat"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_18sdp"
                     android:gravity="center_vertical" />
-
-                <ImageView
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:background="@drawable/logout"
-                    android:id="@+id/iv_logout"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -66,7 +57,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_chatmessage"
+        android:id="@+id/rv_chat_message"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingBottom="@dimen/_10sdp"
@@ -96,7 +87,7 @@
 
             <EditText
                 android:id="@+id/et_msg"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxHeight="@dimen/_80sdp"
                 android:minHeight="@dimen/_20sdp"
@@ -126,7 +117,7 @@
         app:layout_constraintBottom_toBottomOf="@id/cv_msg_send"
         app:layout_constraintTop_toTopOf="@id/cv_msg_send"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="@dimen/_7sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
         android:src="@drawable/ic_send" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,6 +28,8 @@ import com.codecrush.mentalhealthchatbot.fragment.EmergencyFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity
 {
     ImageView IVChatList,IVLogout;
@@ -44,6 +46,16 @@ public class MainActivity extends AppCompatActivity
         IVLogout = findViewById(R.id.iv_logout);
         bottomNavbar = findViewById(R.id.navigation);
         FrameLayout=findViewById(R.id.framelayout);
+
+        SharedPreferences userprefrence = getSharedPreferences("user", MODE_PRIVATE);
+
+        if (!userprefrence.contains("_id"))
+        {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        }
+
+
         IVLogout.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -52,7 +64,14 @@ public class MainActivity extends AppCompatActivity
                 SharedPreferences userprefrence = getSharedPreferences("user", MODE_PRIVATE);
                 SharedPreferences.Editor editor = userprefrence.edit();
 
-                editor.clear();
+                Map<String,?> allEntries=userprefrence.getAll();
+
+                for (Map.Entry<String ,?> entry:allEntries.entrySet())
+                {
+                    String key=entry.getKey();
+                    editor.remove(key);
+
+                }
                 editor.commit();
 
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));

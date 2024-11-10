@@ -16,7 +16,7 @@
 
     <item android:id="@+id/emergency"
         android:title="Emergency"
-        android:icon="@drawable/doctor_selector">
+        android:icon="@drawable/emergency_selector">
 
     </item>
 

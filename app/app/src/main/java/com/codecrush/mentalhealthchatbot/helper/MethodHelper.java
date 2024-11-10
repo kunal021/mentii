@@ -2,6 +2,7 @@ package com.codecrush.mentalhealthchatbot.helper;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -21,6 +22,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import retrofit2.Response;
 
@@ -98,9 +102,8 @@ public class MethodHelper
             try {
 
                 JSONObject jsonObject = new JSONObject(Response.errorBody().string());
-                String Message = jsonObject.getString("message");
-                String code=String.valueOf(jsonObject.getInt("status"));
-                Toast.makeText(Context, "Error(" + code + ") : " + Message, Toast.LENGTH_LONG).show();
+                String Message = jsonObject.getString("error");
+                Toast.makeText(Context, "Error : " + Message, Toast.LENGTH_LONG).show();
 
             } catch (JSONException | IOException e) {
                 throw new RuntimeException(e);
@@ -261,4 +264,38 @@ public class MethodHelper
         return taskCompletionSource.getTask();
     }
 
+    public static String getuserName(Context Context)
+    {
+        SharedPreferences user= Context.getSharedPreferences("user", android.content.Context.MODE_PRIVATE);
+        return user.getString("username","null");
+    }
+
+    public static String getTime(String InputTimeStamp)
+    {
+        SimpleDateFormat inputFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        SimpleDateFormat outputFormat=new SimpleDateFormat("hh:mm a");
+
+        try
+        {
+            Date d=inputFormat.parse(InputTimeStamp);
+            return outputFormat.format(d);
+        }
+        catch (ParseException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public static String get_ID(Context Context)
+    {
+        SharedPreferences user= Context.getSharedPreferences("user", android.content.Context.MODE_PRIVATE);
+        return user.getString("_id","null");
+    }
+
+    public static String getName(Context Context)
+    {
+        SharedPreferences user= Context.getSharedPreferences("user", android.content.Context.MODE_PRIVATE);
+        return user.getString("name","null");
+    }
 }

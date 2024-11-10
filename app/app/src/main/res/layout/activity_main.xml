@@ -74,7 +74,7 @@
         app:layout_constraintTop_toBottomOf="@+id/appbarlayout"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         android:layout_marginTop="@dimen/_45sdp"
-        android:layout_marginBottom="@dimen/_40sdp"
+        android:layout_marginBottom="@dimen/_50sdp"
         android:background="@color/white"
         android:id="@+id/framelayout">
     </FrameLayout>
@@ -82,15 +82,15 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
+        android:layout_height="@dimen/_50sdp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/bottomnavigation_corner"
+        android:paddingBottom="1dp"
         android:elevation="@dimen/_4sdp"
         app:cardUseCompatPadding="true"
         app:itemIconSize="@dimen/_20sdp"
         app:itemIconTint="@color/black"
         app:itemPaddingBottom="0dp"
-        app:itemRippleColor="@android:color/white"
         app:itemTextColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/menu_bottom"

@@ -8,6 +8,23 @@
     tools:context=".fragment.ChatFragment"
     android:background="@color/white">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cv_msg_send"
+        android:padding="@dimen/_10sdp"
+        android:textAlignment="center"
+        android:text="Need Someone To Talk To? \nI'm Here..."
+        android:textColor="@color/light_black"
+        android:textSize="@dimen/_20sdp"
+        android:textStyle="bold">
+
+    </TextView>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_chat_message"
         android:layout_width="match_parent"
@@ -68,7 +85,7 @@
 
             <EditText
                 android:id="@+id/et_msg"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxHeight="@dimen/_80sdp"
                 android:minHeight="@dimen/_20sdp"
@@ -79,7 +96,7 @@
                 android:background="@android:color/transparent"
                 android:inputType="text|textMultiLine"
                 android:textCursorDrawable="@drawable/cursor"
-                android:hint="Type Your Doubt Here"
+                android:hint="Type here"
                 android:textColorHint="@color/hint"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp">
@@ -99,7 +116,7 @@
         app:layout_constraintBottom_toBottomOf="@id/cv_msg_send"
         app:layout_constraintTop_toTopOf="@id/cv_msg_send"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="@dimen/_7sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
         android:src="@drawable/ic_send" />
 
 
