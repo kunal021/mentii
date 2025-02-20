@@ -67,9 +67,4 @@ public interface ApiData
                                   @Field("purchase_type") String purchaseType
     );
 
-
-
-
-
-
 }
